@@ -1,0 +1,82 @@
+# Codemagic configuration: native Android (Kotlin + Jetpack Compose + libGDX 1.12.1, OpenGL ES 3D).
+# The Gradle project lives in ./MyUmrahJourney (settings.gradle.kts, gradlew, :app :core :game).
+#
+# Workflow: android-debug  -> builds the debug APK with  :app:assembleDebug
+# Start it manually: Codemagic > My-Umrah-Journey > Start new build > branch native-android-development
+#                    > workflow "Android debug APK".
+# No signing, keystore or secrets are needed for a debug build. Release builds come later.
+#
+# NOTE: this file has not been run on Codemagic yet. A build is only successful when Codemagic
+# reports success AND the APK appears under "Artifacts".
+
+workflows:
+  android-debug:
+    name: Android debug APK
+    instance_type: mac_mini_m2   # the machine type used in Codemagic's own native Android example
+    max_build_duration: 60
+    environment:
+      java: 17                   # AGP 8.7.3 requires JDK 17
+      vars:
+        PROJECT_DIR: MyUmrahJourney   # actual Gradle project directory inside the repository
+    scripts:
+      - name: Show toolchain
+        script: |
+          java -version
+          echo "ANDROID_SDK_ROOT=$ANDROID_SDK_ROOT"
+          ls "$ANDROID_SDK_ROOT/platforms" 2>/dev/null || echo "(no platforms folder listed)"
+          ls "$CM_BUILD_DIR/$PROJECT_DIR"
+          test -f "$CM_BUILD_DIR/$PROJECT_DIR/settings.gradle.kts"
+
+      - name: Point Gradle at the Android SDK
+        script: |
+          echo "sdk.dir=$ANDROID_SDK_ROOT" > "$CM_BUILD_DIR/$PROJECT_DIR/local.properties"
+
+      - name: Accept SDK licences and install Platform 35 (best effort)
+        # compileSdk/targetSdk are 35. If the image already has them this is a no-op.
+        ignore_failure: true
+        script: |
+          SDKMANAGER="$ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager"
+          if [ -x "$SDKMANAGER" ]; then
+            yes | "$SDKMANAGER" --licenses > /dev/null || true
+            "$SDKMANAGER" "platforms;android-35" "build-tools;34.0.0" || true
+          else
+            echo "sdkmanager not found at $SDKMANAGER; relying on the image's SDK and AGP auto-download"
+          fi
+
+      - name: Verify Gradle wrapper integrity
+        # Compares gradle-wrapper.jar with Gradle's published SHA-256 for 8.10.2. If it differs, an
+        # official wrapper is restored in this CI workspace only. See tools/verify_gradle_wrapper.sh.
+        script: |
+          chmod +x "$CM_BUILD_DIR/tools/verify_gradle_wrapper.sh"
+          "$CM_BUILD_DIR/tools/verify_gradle_wrapper.sh" "$CM_BUILD_DIR/$PROJECT_DIR"
+
+      - name: Make Gradle wrapper executable
+        script: |
+          chmod +x "$CM_BUILD_DIR/$PROJECT_DIR/gradlew"
+
+      - name: Unit tests (core + game)
+        # Existing Stage 2 tests. A failure here is reported but does not stop the APK build.
+        ignore_failure: true
+        script: |
+          cd "$CM_BUILD_DIR/$PROJECT_DIR"
+          ./gradlew :core:testDebugUnitTest :game:testDebugUnitTest --stacktrace
+
+      - name: Build debug APK
+        script: |
+          cd "$CM_BUILD_DIR/$PROJECT_DIR"
+          ./gradlew :app:assembleDebug --stacktrace
+
+      - name: Inspect APK (libGDX natives, 16 KB alignment report)
+        # Informational: lists the native libraries and reports 16 KB page-size readiness.
+        script: |
+          APK="$(ls "$CM_BUILD_DIR/$PROJECT_DIR"/app/build/outputs/apk/debug/*.apk | head -n 1)"
+          echo "APK: $APK"
+          unzip -l "$APK" | grep -E "lib/.*/libgdx\.so" || { echo "ERROR: libgdx.so missing from APK"; exit 1; }
+          python3 "$CM_BUILD_DIR/tools/check_elf_alignment.py" "$APK" | tee "$CM_BUILD_DIR/elf-alignment-report.txt"
+
+    artifacts:
+      - MyUmrahJourney/app/build/outputs/apk/debug/*.apk
+      - elf-alignment-report.txt
+      - MyUmrahJourney/gradle/wrapper/gradle-wrapper.jar
+      - MyUmrahJourney/gradle/wrapper/gradle-wrapper.properties
+      - MyUmrahJourney/**/build/reports/tests/**/*
