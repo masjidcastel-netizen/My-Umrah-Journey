@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="game_controls_hint">Dirigez avec les flèches gauche et droite. La pédale de droite accélère, celle de gauche freine et recule. Retour met en pause.</string>
+</resources>

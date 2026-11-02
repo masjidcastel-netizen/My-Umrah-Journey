@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="game_controls_hint">Steer with the left and right arrows. Right pedal drives, left pedal brakes and reverses. Back pauses.</string>
+</resources>

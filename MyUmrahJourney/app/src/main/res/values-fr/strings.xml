@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Mon voyage d’Omra</string>
+
+    <string name="nav_home">Accueil</string>
+    <string name="nav_settings">Paramètres</string>
+    <string name="nav_about">À propos</string>
+
+    <string name="home_greeting_named">As-salamu alaykum, %1$s</string>
+    <string name="home_greeting_anonymous">As-salamu alaykum</string>
+    <string name="home_tagline">Votre chemin vers la Omra, pas à pas.</string>
+    <string name="home_start_journey">Commencer le voyage</string>
+    <string name="home_start_hint">Ouvre le prototype de conduite 3D. Passez votre téléphone en mode paysage.</string>
+    <string name="home_saved_title">Enregistré sur cet appareil</string>
+    <string name="home_saved_name">Nom</string>
+    <string name="home_saved_language">Langue</string>
+    <string name="home_saved_sound">Effets sonores</string>
+    <string name="home_saved_music">Musique</string>
+    <string name="home_saved_last">Dernier enregistrement</string>
+    <string name="home_saved_never">Pas encore enregistré</string>
+    <string name="home_open_settings">Modifier les paramètres</string>
+
+    <string name="common_on">Activé</string>
+    <string name="common_off">Désactivé</string>
+    <string name="common_not_set">Non renseigné</string>
+
+    <string name="settings_name_label">Votre nom</string>
+    <string name="settings_name_support">Affiché sur l’écran d’accueil. %1$d caractères maximum.</string>
+    <string name="settings_language_title">Langue</string>
+    <string name="settings_audio_title">Audio</string>
+    <string name="settings_sound">Effets sonores</string>
+    <string name="settings_music">Musique</string>
+    <string name="settings_save">Enregistrer les paramètres</string>
+    <string name="settings_reset">Rétablir les valeurs par défaut</string>
+    <string name="settings_saved">Paramètres enregistrés</string>
+    <string name="settings_reset_done">Paramètres réinitialisés</string>
+    <string name="settings_unsaved">Vous avez des modifications non enregistrées.</string>
+
+    <string name="about_summary">Mon voyage d’Omra est une application Android native conçue avec Kotlin, Jetpack Compose, Material 3 et libGDX.</string>
+    <string name="about_stage">Étape 2 — Prototype de conduite 3D</string>
+    <string name="about_version">Version %1$s</string>
+    <string name="about_modules_title">Modules</string>
+    <string name="about_module_app">app — écrans, navigation et thème</string>
+    <string name="about_module_core">core — langue, état du joueur et stockage</string>
+    <string name="about_module_game">game — prototype de conduite 3D libGDX</string>
+    <string name="about_languages_title">Langues</string>
+    <string name="settings_graphics_title">Qualité graphique 3D</string>
+    <string name="settings_graphics_hint">Utilisée par le jeu de conduite. Les contours plus lisses s’appliquent au prochain lancement du jeu.</string>
+    <string name="graphics_low">Basse (économie de batterie)</string>
+    <string name="graphics_medium">Moyenne</string>
+    <string name="graphics_high">Haute (ombres, contours lisses)</string>
+</resources>

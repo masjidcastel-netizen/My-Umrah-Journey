@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">رحلتي إلى العمرة</string>
+
+    <string name="nav_home">الرئيسية</string>
+    <string name="nav_settings">الإعدادات</string>
+    <string name="nav_about">حول</string>
+
+    <string name="home_greeting_named">السلام عليكم، %1$s</string>
+    <string name="home_greeting_anonymous">السلام عليكم</string>
+    <string name="home_tagline">طريقك إلى العمرة، خطوة بخطوة.</string>
+    <string name="home_start_journey">ابدأ الرحلة</string>
+    <string name="home_start_hint">يفتح نموذج القيادة ثلاثي الأبعاد. أدِر هاتفك إلى الوضع الأفقي.</string>
+    <string name="home_saved_title">المحفوظ على هذا الجهاز</string>
+    <string name="home_saved_name">الاسم</string>
+    <string name="home_saved_language">اللغة</string>
+    <string name="home_saved_sound">المؤثرات الصوتية</string>
+    <string name="home_saved_music">الموسيقى</string>
+    <string name="home_saved_last">آخر حفظ</string>
+    <string name="home_saved_never">لم يُحفظ بعد</string>
+    <string name="home_open_settings">تعديل الإعدادات</string>
+
+    <string name="common_on">مفعّل</string>
+    <string name="common_off">معطّل</string>
+    <string name="common_not_set">غير محدد</string>
+
+    <string name="settings_name_label">اسمك</string>
+    <string name="settings_name_support">يظهر في الشاشة الرئيسية. بحد أقصى %1$d حرفًا.</string>
+    <string name="settings_language_title">اللغة</string>
+    <string name="settings_audio_title">الصوت</string>
+    <string name="settings_sound">المؤثرات الصوتية</string>
+    <string name="settings_music">الموسيقى</string>
+    <string name="settings_save">حفظ الإعدادات</string>
+    <string name="settings_reset">استعادة الإعدادات الافتراضية</string>
+    <string name="settings_saved">تم حفظ الإعدادات</string>
+    <string name="settings_reset_done">تمت إعادة ضبط الإعدادات</string>
+    <string name="settings_unsaved">لديك تغييرات غير محفوظة.</string>
+
+    <string name="about_summary">رحلتي إلى العمرة تطبيق أندرويد أصلي مبني باستخدام Kotlin وJetpack Compose وMaterial 3 وlibGDX.</string>
+    <string name="about_stage">المرحلة 2 — نموذج القيادة ثلاثي الأبعاد</string>
+    <string name="about_version">الإصدار %1$s</string>
+    <string name="about_modules_title">الوحدات</string>
+    <string name="about_module_app">app — الشاشات والتنقل والمظهر</string>
+    <string name="about_module_core">core — اللغة وحالة اللاعب والتخزين</string>
+    <string name="about_module_game">game — نموذج قيادة ثلاثي الأبعاد بمحرك libGDX</string>
+    <string name="about_languages_title">اللغات</string>
+    <string name="settings_graphics_title">جودة الرسومات ثلاثية الأبعاد</string>
+    <string name="settings_graphics_hint">تُستخدم في لعبة القيادة. تُطبَّق الحواف الأنعم عند التشغيل التالي للعبة.</string>
+    <string name="graphics_low">منخفضة (توفير البطارية)</string>
+    <string name="graphics_medium">متوسطة</string>
+    <string name="graphics_high">عالية (ظلال وحواف أنعم)</string>
+</resources>
