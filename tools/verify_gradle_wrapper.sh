@@ -61,9 +61,11 @@ echo "Gradle $GRADLE_VERSION distribution checksum verified."
 
 unzip -q "$TMP/gradle.zip" -d "$TMP"
 mkdir "$TMP/empty"
+# Gradle 8.x refuses to run any task, even `wrapper`, in a directory without a build: give it an empty one.
+: > "$TMP/empty/settings.gradle"
 ( cd "$TMP/empty" && "$TMP/gradle-${GRADLE_VERSION}/bin/gradle" wrapper \
     --gradle-version "$GRADLE_VERSION" --distribution-type bin \
-    --gradle-distribution-sha256-sum "$EXPECTED_DIST_SHA256" --no-daemon -q )
+    --gradle-distribution-sha256-sum "$EXPECTED_DIST_SHA256" --no-validate-url --no-daemon -q )
 
 NEW="$TMP/empty/gradle/wrapper/gradle-wrapper.jar"
 [ -f "$NEW" ] || { echo "ERROR: wrapper generation failed"; exit 1; }
@@ -76,6 +78,8 @@ fi
 
 cp "$NEW" "$JAR"
 if ! grep -q '^distributionSha256Sum=' "$PROPS"; then
+  # make sure the file ends with a newline before appending
+  [ -n "$(tail -c1 "$PROPS")" ] && printf '\n' >> "$PROPS"
   printf 'distributionSha256Sum=%s\n' "$EXPECTED_DIST_SHA256" >> "$PROPS"
 fi
 chmod +x "$PROJECT_DIR/gradlew" 2>/dev/null || true
