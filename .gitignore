@@ -22,3 +22,7 @@ captures/
 .cxx/
 .DS_Store
 *.iml
+
+# Python bytecode
+__pycache__/
+*.pyc
