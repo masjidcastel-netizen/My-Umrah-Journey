@@ -46,9 +46,10 @@ workflows:
             echo "sdkmanager not found at $SDKMANAGER; relying on the image's SDK and AGP auto-download"
           fi
 
-      - name: Verify Gradle wrapper integrity
-        # Compares gradle-wrapper.jar with Gradle's published SHA-256 for 8.10.2. If it differs, an
-        # official wrapper is restored in this CI workspace only. See tools/verify_gradle_wrapper.sh.
+      - name: Verify committed Gradle wrapper (verify-only, never replaces anything)
+        # Checks the COMMITTED gradle-wrapper.jar, gradlew, gradlew.bat and the distribution
+        # checksum pin against known-good SHA-256 values for Gradle 8.10.2. Any mismatch fails the
+        # build. Nothing is downloaded or modified. See tools/verify_gradle_wrapper.sh.
         script: |
           chmod +x "$CM_BUILD_DIR/tools/verify_gradle_wrapper.sh"
           "$CM_BUILD_DIR/tools/verify_gradle_wrapper.sh" "$CM_BUILD_DIR/$PROJECT_DIR"
@@ -56,6 +57,14 @@ workflows:
       - name: Make Gradle wrapper executable
         script: |
           chmod +x "$CM_BUILD_DIR/$PROJECT_DIR/gradlew"
+
+      - name: Wrapper smoke test (must start Gradle 8.10.2)
+        # Blocking. Downloads the checksum-pinned Gradle 8.10.2 distribution and proves the wrapper
+        # works before any test or build runs.
+        script: |
+          cd "$CM_BUILD_DIR/$PROJECT_DIR"
+          ./gradlew --version | tee "$CM_BUILD_DIR/gradle-version.txt"
+          grep -q "^Gradle 8\.10\.2$" "$CM_BUILD_DIR/gradle-version.txt"
 
       - name: Unit tests (core + game)
         # Existing Stage 2 tests. A failure here is reported but does not stop the APK build.
@@ -80,6 +89,5 @@ workflows:
     artifacts:
       - MyUmrahJourney/app/build/outputs/apk/debug/*.apk
       - elf-alignment-report.txt
-      - MyUmrahJourney/gradle/wrapper/gradle-wrapper.jar
-      - MyUmrahJourney/gradle/wrapper/gradle-wrapper.properties
+      - gradle-version.txt
       - MyUmrahJourney/**/build/reports/tests/**/*
